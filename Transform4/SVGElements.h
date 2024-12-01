@@ -9,6 +9,7 @@
 #include "windows.h"
 #include "gdiplus.h"
 #include "Transform.h"
+#include "Point.h"
 
 #pragma comment(lib, "gdiplus.lib")
 

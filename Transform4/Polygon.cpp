@@ -2,8 +2,8 @@
 #include "Color.h"
 #include <Gdiplus.h>
 
-polygonSVG::polygonSVG(const std::vector<std::pair<int, int>>& points, const std::string& fill, double fill_opacity, const std::string& stroke, int stroke_width, double stroke_opacity)
-    : points(points), ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
+polygonSVG::polygonSVG(const std::vector<std::pair<int, int>>& points, const std::string& fill, double fill_opacity, const std::string& stroke, int stroke_width, double stroke_opacity, Transform transform)
+    : points(points), ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity), transform(transform) {}
 
 void polygonSVG::render(HDC hdc) const 
 {
@@ -32,8 +32,25 @@ void polygonSVG::render(HDC hdc) const
 
         path.CloseFigure(); // Đóng đa giác
     }
+    
+    SvgPoint center = getCenter();
+    transform.apply(graphics, center);
 
     // Vẽ đa giác với màu fill và stroke
     graphics.FillPath(&brush, &path); // Vẽ phần fill
     graphics.DrawPath(&pen, &path);   // Vẽ đường viền (stroke)
+}
+
+// Hàm trả về tọa độ trung tâm của đa giác
+SvgPoint polygonSVG::getCenter() const
+{
+	// Tính trung bình tọa độ x và y của các điểm
+	double sumX = 0, sumY = 0;
+	for (const auto& point : points) {
+		sumX += point.first;
+		sumY += point.second;
+	}
+
+	// Trả về tọa độ trung tâm
+	return SvgPoint(sumX / points.size(), sumY / points.size());
 }

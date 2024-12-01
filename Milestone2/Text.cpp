@@ -1,8 +1,8 @@
 #include "Text.h"
 #include "Color.h"
 
-Text::Text(int x, int y, int font_size, const std::string& content, const std::string& fill)
-    : x(x), y(y), font_size(font_size), content(content), fill(fill) {}
+Text::Text(int x, int y, std::wstring font_family, double font_size, const std::string& content, const std::string& fill, Transform transform)
+    : x(x), y(y), font_family(font_family), font_size(font_size), content(content), fill(fill), transform(transform) {}
 
 void Text::render(HDC hdc) const {
     std::cout << x << " " << y;
@@ -10,12 +10,11 @@ void Text::render(HDC hdc) const {
     SVGColor textColor = SVGColor::parseColor(fill);
 
 
-        // Create a Graphics object to measure text size
+    // Create a Graphics object to measure text size
     Gdiplus::Graphics graphics(hdc);
 
     // Set up the font
-    Gdiplus::Font font(L"Arial", static_cast<REAL>(font_size));
-
+    Gdiplus::Font font(font_family.c_str(), static_cast<REAL>(font_size));
 
     Gdiplus::SolidBrush brush(Gdiplus::Color(255, textColor.getRed(), textColor.getGreen(), textColor.getBlue()));
 
@@ -31,6 +30,10 @@ void Text::render(HDC hdc) const {
 
     // Adjust the y position based on the text's height
     float adjustedY = y - textBox.Height;  // Adjust to ensure text is positioned correctly
+    
+    // Apply the transformation
+    SvgPoint center(x + textBox.Width / 2, y + textBox.Height / 2); // Calculate the center of the text bounding box
+    transform.apply(graphics, center);
 
     // Draw the text at the adjusted position
     graphics.DrawString(
@@ -40,6 +43,4 @@ void Text::render(HDC hdc) const {
         Gdiplus::PointF(x, adjustedY), // Use the adjusted y position
         &brush  // Brush object for color
     );
-
-
 }

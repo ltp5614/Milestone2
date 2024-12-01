@@ -23,7 +23,7 @@ public:
 	//Apply transform
 	void apply(Graphics& graphics, SvgPoint center) const;
 
-	//Load tranform from file
+	//Load transform from file
 	Transform loadTransform(xml_node<>* node);
 
 	//Getter

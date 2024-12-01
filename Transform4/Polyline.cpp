@@ -8,9 +8,11 @@ polylineSVG::polylineSVG(const std::vector<std::pair<int, int>>& points,
                          double fill_opacity, 
                          const std::string& stroke, 
                          int stroke_width, 
-                         double stroke_opacity)
+                         double stroke_opacity,
+                         Transform transform)
     : points(points), 
-      ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
+      ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity), 
+      transform(transform) {}
 
 // Hàm render để vẽ polyline lên HDC
 void polylineSVG::render(HDC hdc) const {
@@ -48,6 +50,21 @@ void polylineSVG::render(HDC hdc) const {
         graphics.FillPolygon(&fillBrush, &gdipPoints[0], gdipPoints.size());
     }
 
+    SvgPoint center = getCenter();
+    transform.apply(graphics, center);
+
     // Vẽ polyline (đường gấp khúc) với viền (stroke)
     graphics.DrawPolygon(&strokePen, &gdipPoints[0], gdipPoints.size());
+}
+
+// Hàm trả về tọa độ trung tâm của polyline
+SvgPoint polylineSVG::getCenter() const {
+	// Tính trung bình tọa độ x và y của các điểm
+	double sumX = 0, sumY = 0;
+	for (const auto& point : points) {
+		sumX += point.first;
+		sumY += point.second;
+	}
+
+	return SvgPoint(sumX / points.size(), sumY / points.size());
 }
