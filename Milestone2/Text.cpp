@@ -7,14 +7,14 @@ Text::Text(int x, int y, int font_size, const std::string& content, const std::s
 void Text::render(HDC hdc) const {
     std::cout << x << " " << y;
     // Convert the fill color string into a Color object (assuming you use Color class for handling colors)
-    Color textColor = Color::parseColor(fill);
+    SVGColor textColor = SVGColor::parseColor(fill);
 
 
         // Create a Graphics object to measure text size
     Gdiplus::Graphics graphics(hdc);
 
     // Set up the font
-    Gdiplus::Font font(L"Arial", font_size);
+    Gdiplus::Font font(L"Arial", static_cast<REAL>(font_size));
 
 
     Gdiplus::SolidBrush brush(Gdiplus::Color(255, textColor.getRed(), textColor.getGreen(), textColor.getBlue()));

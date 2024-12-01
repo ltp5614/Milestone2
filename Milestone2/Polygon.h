@@ -4,7 +4,7 @@
 #include "SVGElements.h"
 #include "shape.h"
 
-class polygonSVG : public shapeSVG
+class polygonSVG : public ShapeSVG
 {
 private:
     std::vector<std::pair<int, int>> points;

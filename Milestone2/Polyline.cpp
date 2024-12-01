@@ -10,13 +10,13 @@ polylineSVG::polylineSVG(const std::vector<std::pair<int, int>>& points,
                          int stroke_width, 
                          double stroke_opacity)
     : points(points), 
-      shapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
+      ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
 
 // Hàm render để vẽ polyline lên HDC
 void polylineSVG::render(HDC hdc) const {
-    // Phân tích chuỗi màu để tạo đối tượng Color cho fill và stroke
-    Color fillColor = Color::parseColor(fill);
-    Color strokeColor = Color::parseColor(stroke);
+    // Phân tích chuỗi màu để tạo đối tượng SVGColor cho fill và stroke
+    SVGColor fillColor = SVGColor::parseColor(fill);
+    SVGColor strokeColor = SVGColor::parseColor(stroke);
 
     // Tạo đối tượng Graphics từ HDC
     Gdiplus::Graphics graphics(hdc);
@@ -41,7 +41,7 @@ void polylineSVG::render(HDC hdc) const {
         strokeColor.getRed(), 
         strokeColor.getGreen(), 
         strokeColor.getBlue()
-    ), stroke_width);
+    ), static_cast<REAL>(stroke_width));
 
     // Nếu có màu nền (fill), sẽ vẽ polyline với màu nền
     if (!fill.empty()) {

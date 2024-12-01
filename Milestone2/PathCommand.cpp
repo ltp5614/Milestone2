@@ -10,7 +10,7 @@ char PathCommand::getCommand() const
 }
 
 //
-std::string PathCommand::tostring() const
+std::string PathCommand::toString() const
 {
   std::ostringstream oss;
   oss << command << " ";

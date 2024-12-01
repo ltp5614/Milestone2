@@ -1,29 +1,29 @@
 #include "Color.h"
 
-Color::Color(int red, int green, int blue, float alpha) 
+SVGColor::SVGColor(int red, int green, int blue, float alpha) 
 	: red(red), green(green), blue(blue),alpha(alpha) {}
 
-int Color::getRed() {
+int SVGColor::getRed() {
 	return red;
 }
 
-int Color::getGreen() {
+int SVGColor::getGreen() {
 	return green;
 }
 
-int Color::getBlue() {
+int SVGColor::getBlue() {
 	return blue;
 }
 
-float Color::getAlpha() {
+float SVGColor::getAlpha() {
 	return alpha;
 }
 
-Color Color::parseColor(const std::string& colorStr) {
+SVGColor SVGColor::parseColor(const std::string& colorStr) {
 	if (colorStr.find("rgb") != 0) {
 		std::cout << "Invalid color data" << std::endl;
 
-		return Color(-1, -1, -1, -1.0);
+		return SVGColor(-1, -1, -1, -1.0);
 	}
 
 	int red = 0, green = 0, blue = 0;
@@ -43,7 +43,7 @@ Color Color::parseColor(const std::string& colorStr) {
 	getline(ss, temp);
 	blue = stoi(temp);
 
-	return Color(red, green, blue, alpha);
+	return SVGColor(red, green, blue, alpha);
 }
 
 bool isValidColor(int color) {

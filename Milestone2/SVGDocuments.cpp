@@ -1,9 +1,6 @@
 // SVGDocuments.cpp
-
 #include "SVGDocuments.h" // Bao gồm windows.h trong file .cpp để tránh ảnh hưởng tới file khác
-
-
-
+#include "Rectangle.h"
 
 SVGDocuments SVGDocuments::loadFile(const std::string& filePath) {
     SVGDocuments list;
@@ -60,9 +57,11 @@ SVGDocuments SVGDocuments::loadFile(const std::string& filePath) {
             std::string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "none";
             double fill_opacity = node->first_attribute("fill-opacity") ? std::stod(node->first_attribute("fill-opacity")->value()) : 0;
             int stroke_width = node->first_attribute("stroke-width") ? std::stoi(node->first_attribute("stroke-width")->value()) : 0;
+            Transform transform;
+            transform = transform.loadTransform(node);
 
             // Create a rectangle object
-            std::unique_ptr<Rect> rect = std::make_unique<Rect>(x, y, width, height, fill, fill_opacity, stroke, stroke_width);
+            std::unique_ptr<SVGRectangle> rect = std::make_unique<SVGRectangle>(x, y, width, height, fill, fill_opacity, stroke, stroke_width, transform);
 
             // Add a new rectangle element into SVGDocuments
             list.addElement(std::move(rect));
@@ -79,9 +78,11 @@ SVGDocuments SVGDocuments::loadFile(const std::string& filePath) {
             double stroke_opacity = node->first_attribute("stroke-opacity") ? std::stod(node->first_attribute("stroke-opacity")->value()) : 0;
             std::string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "none";
             std::string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "none";
+            Transform transform;
+            transform = transform.loadTransform(node);
 
             // Create a circle object
-            std::unique_ptr<Circle> circle = std::make_unique<Circle>(centerX, centerY, radius, fill, fill_opacity, stroke, stroke_width, stroke_opacity);
+            std::unique_ptr<Circle> circle = std::make_unique<Circle>(centerX, centerY, radius, fill, fill_opacity, stroke, stroke_width, stroke_opacity, transform);
 
             // Add a new circle element into SVGDocument
             list.addElement(std::move(circle));
@@ -99,9 +100,11 @@ SVGDocuments SVGDocuments::loadFile(const std::string& filePath) {
             double stroke_opacity = node->first_attribute("stroke-opacity") ? std::stod(node->first_attribute("stroke-opacity")->value()) : 0;
             std::string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "none";
             std::string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "none";
-            
+            Transform transform;
+            transform = transform.loadTransform(node);
+
             // Create an ellipse object
-            std::unique_ptr<ellipseSVG> ellipse = std::make_unique<ellipseSVG>(centerX, centerY, radiusX, radiusY, fill, fill_opacity, stroke, stroke_width, stroke_opacity);
+            std::unique_ptr<ellipseSVG> ellipse = std::make_unique<ellipseSVG>(centerX, centerY, radiusX, radiusY, fill, fill_opacity, stroke, stroke_width, stroke_opacity, transform);
 
             // Add a new ellipse element into SVGDocument
             list.addElement(std::move(ellipse));
@@ -133,10 +136,11 @@ SVGDocuments SVGDocuments::loadFile(const std::string& filePath) {
             std::string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "none";
             int stroke_width = node->first_attribute("stroke-width") ? std::stoi(node->first_attribute("stroke-width")->value()) : 0;
             double stroke_opacity = node->first_attribute("stroke-opacity") ? std::stod(node->first_attribute("stroke-opacity")->value()) : 0;
-
+            Transform transform;
+            transform = transform.loadTransform(node);
 
             // Create a line object
-            std::unique_ptr<Line> line = std::make_unique<Line>(x1, y1, x2, y2, stroke, stroke_width, stroke_opacity);
+            std::unique_ptr<Line> line = std::make_unique<Line>(x1, y1, x2, y2, stroke, stroke_width, stroke_opacity, transform);
 
             // Add a new line element into SVGDocument
             list.addElement(std::move(line));

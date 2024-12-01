@@ -8,8 +8,11 @@
 #include <memory>
 #include "windows.h"
 #include "gdiplus.h"
+#include "Transform.h"
 
 #pragma comment(lib, "gdiplus.lib")
+
+using namespace Gdiplus;
 
 class SVGElements {
 public:

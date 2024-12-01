@@ -5,15 +5,15 @@
 #include <sstream>
 
 // Định nghĩa kiểu svgPoints (có thể là struct hoặc class)
-class svgPoints 
+class SvgPoint 
 {
   private:
     double x;
     double y;
   public:
-    svgPoints();
-    svgPoints(int, int);
-    static std::vector<svgPoints> parsePointForPath(const std::string& d);
+    SvgPoint();
+    SvgPoint(double, double);
+    static std::vector<SvgPoint> parsePointForPath(const std::string& d);
     double getX();
     double getY();
     void setX(double);

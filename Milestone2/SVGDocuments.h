@@ -2,7 +2,7 @@
 #define SVGDOCUMENTS_H
 
 #include "SVGElements.h"
-#include "Rect.h"
+#include "Rectangle.h"
 #include "Circle.h"
 #include "Line.h"
 #include "Path.h"

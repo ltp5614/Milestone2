@@ -3,14 +3,14 @@
 
 #include "SVGElements.h"
 
-class Color {
+class SVGColor {
    private:
        int red, blue, green;
        float alpha; // Transparency (default: 255)
 
    public:
-       Color(int red, int blue, int green, float alpha = 1.0);
-       static Color parseColor(const std::string& colorStr);
+       SVGColor(int red, int blue, int green, float alpha = 1.0);
+       static SVGColor parseColor(const std::string& colorStr);
        
        int getRed();
        int getBlue();

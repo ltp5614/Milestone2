@@ -3,14 +3,14 @@
 #include "Color.h"
 
 Circle::Circle(int cx, int cy, int r, const std::string& fill, double fill_opacity,
-               const std::string& stroke, int stroke_width, double stroke_opacity)
-    : shapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity), 
-      cx(cx), cy(cy), r(r) {}
+               const std::string& stroke, int stroke_width, double stroke_opacity, Transform transform)
+    : ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity), 
+      cx(cx), cy(cy), r(r), transform(transform) {}
 
 
 void Circle::render(HDC hdc) const {
-    Color fillColor = Color::parseColor(fill);
-    Color strokeColor = Color::parseColor(stroke);
+    SVGColor fillColor = SVGColor::parseColor(fill);
+    SVGColor strokeColor = SVGColor::parseColor(stroke);
 
     std::cout << fillColor.getBlue() << " " << fill_opacity;
 
@@ -19,7 +19,10 @@ void Circle::render(HDC hdc) const {
     Gdiplus::SolidBrush fillBrush(Gdiplus::Color(255 * fill_opacity, fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue()));
 
     // Tạo đối tượng Pen cho màu viền và độ trong suốt
-    Gdiplus::Pen strokePen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), stroke_width);
+    Gdiplus::Pen strokePen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), static_cast<REAL>(stroke_width));
+
+    SvgPoint center(cx, cy);
+    transform.apply(graphics, center);
 
     // Vẽ hình tròn (Circle)
     graphics.FillEllipse(&fillBrush, cx - r, cy - r, 2 * r, 2 * r);  // Vẽ nền

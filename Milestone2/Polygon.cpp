@@ -3,19 +3,19 @@
 #include <Gdiplus.h>
 
 polygonSVG::polygonSVG(const std::vector<std::pair<int, int>>& points, const std::string& fill, double fill_opacity, const std::string& stroke, int stroke_width, double stroke_opacity)
-    : points(points), shapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
+    : points(points), ShapeSVG(fill, stroke, fill_opacity, stroke_width, stroke_opacity) {}
 
 void polygonSVG::render(HDC hdc) const 
 {
-    // Phân tích chuỗi màu để tạo đối tượng Color cho fill và stroke
-    Color fillColor = Color::parseColor(fill);
-    Color strokeColor = Color::parseColor(stroke);
+    // Phân tích chuỗi màu để tạo đối tượng SVGColor cho fill và stroke
+    SVGColor fillColor = SVGColor::parseColor(fill);
+    SVGColor strokeColor = SVGColor::parseColor(stroke);
 
     // Tạo đối tượng Graphics
     Gdiplus::Graphics graphics(hdc);
 
     // Tạo đối tượng Pen và Brush
-    Gdiplus::Pen pen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), stroke_width);
+    Gdiplus::Pen pen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), static_cast<REAL>(stroke_width));
     Gdiplus::SolidBrush brush(Gdiplus::Color(255 * fill_opacity, fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue()));
 
     // Tạo đối tượng GraphicsPath để vẽ đa giác

@@ -100,7 +100,7 @@ const std::vector<PathCommand>& pathSVG::getCommands() const {
 std::string pathSVG::toSVGString() const {
     std::ostringstream oss;
     for (int i = 0; i < commands.size(); ++i) {
-        oss << commands[i].tostring();
+        oss << commands[i].toString();
         if (i < commands.size() - 1) oss << " ";
     }
     return oss.str();
@@ -146,13 +146,13 @@ void pathSVG::parseFromSVGString(const std::string& svgPath) {
 
 void pathSVG::render(HDC hdc) const
 {
-  Color fillColor = Color::parseColor(fill);
-  Color strokeColor = Color::parseColor(stroke);
+  SVGColor fillColor = SVGColor::parseColor(fill);
+  SVGColor strokeColor = SVGColor::parseColor(stroke);
 
   Gdiplus::Graphics graphics(hdc);
   Gdiplus::SolidBrush fillBrush(Gdiplus::Color(255 * fill_opacity, fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue()));
     // Tạo đối tượng Pen cho màu viền và độ trong suốt
-  Gdiplus::Pen strokePen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), stroke_width);
+  Gdiplus::Pen strokePen(Gdiplus::Color(255 * stroke_opacity, strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()), static_cast<REAL>(stroke_width));
 
   // Dùng GraphicsPath để lưu các đoạn Path
   Gdiplus::GraphicsPath path;

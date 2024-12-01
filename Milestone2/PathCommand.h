@@ -14,7 +14,7 @@ class PathCommand
     PathCommand(char cmd, const std::vector<float>& params);
     char getCommand() const;
     const std::vector<float>& getParameters() const;
-    std::string tostring() const;
+    std::string toString() const;
 };
 
 #endif
